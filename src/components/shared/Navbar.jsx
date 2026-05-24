@@ -9,13 +9,16 @@ import DetectLocation from "./DetectLocation";
 import MobileNavLink from "./MobileNavLink";
 import { navLinks } from "../../utils/constants";
 import Navlink from "./Navlink";
-
+import AccountMenu from "./AccountMenu";
 
 const Navbar = () => {
   const { pathname } = useLocation();
   const [openLocationMenu, setOpenLocationMenu] = useState(false);
   const [isNavMenuOpen, setIsNavMenuOpen] = useState(false);
   const userLocation = useSelector((store) => store.userLocation);
+
+  const currentUserStr = localStorage.getItem("currentUser");
+  const currentUser = currentUserStr ? JSON.parse(currentUserStr) : null;
 
   const showSetLocationMenu = () => {
     setOpenLocationMenu(!openLocationMenu);
@@ -48,9 +51,12 @@ const Navbar = () => {
       {/* for width >= 1024px */}
       <ul className=" gap-4 hidden lg:flex-center">
         {
-          navLinks.map(({ id, Icon, path, text }) => (
-            <Navlink onClose={() => { setIsNavMenuOpen(false) }} key={id} Icon={Icon} pathname={pathname} path={path} text={text} />
-          ))
+          navLinks.map(({ id, Icon, path, text }) => {
+            if (path === "/sign-in" && currentUser) {
+              return <AccountMenu key={id} currentUser={currentUser} onClose={() => setIsNavMenuOpen(false)} />;
+            }
+            return <Navlink onClose={() => { setIsNavMenuOpen(false) }} key={id} Icon={Icon} pathname={pathname} path={path} text={text} />;
+          })
         }
       </ul>
 

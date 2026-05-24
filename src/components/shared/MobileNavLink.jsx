@@ -1,11 +1,14 @@
 import { useRef } from 'react';
 import { navLinks } from '../../utils/constants';
 import Navlink from './Navlink';
+import AccountMenu from './AccountMenu';
 import { RxCross1 } from 'react-icons/rx';
-
 
 const MobileNavLink = ({pathname, onClose}) => {
   const menuRef = useRef(null);
+  const currentUserStr = localStorage.getItem("currentUser");
+  const currentUser = currentUserStr ? JSON.parse(currentUserStr) : null;
+
   const handleShowMenu = (e) => {
     if (e.target === menuRef.current) {
       onClose();
@@ -24,11 +27,14 @@ const MobileNavLink = ({pathname, onClose}) => {
           <span className="sr-only">Close navigation</span>
           <RxCross1 />
         </button>
-        <ul className="space-y-7 my-2 flex flex-col items-start">
+        <ul className="space-y-7 my-2 flex flex-col items-start w-full">
         {
-          navLinks.map(({id, Icon, path, text}) => (
-            <Navlink onClose={onClose} key={id} Icon={Icon} pathname={pathname} path={path} text={text}/>
-          ))
+          navLinks.map(({id, Icon, path, text}) => {
+            if (path === "/sign-in" && currentUser) {
+              return <AccountMenu key={id} currentUser={currentUser} onClose={onClose} />;
+            }
+            return <Navlink onClose={onClose} key={id} Icon={Icon} pathname={pathname} path={path} text={text}/>
+          })
         }
         </ul>
       </div>

@@ -25,21 +25,29 @@ const useRestaurant = (resId) => {
           }
       );
 
-      const json = await data.json();
+      if (!data.ok) {
+        throw new Error(`HTTP error! status: ${data.status}`);
+      }
+
+      const text = await data.text();
+      const json = text ? JSON.parse(text) : {};
       
       const restInfo = json?.data?.cards?.find((res) =>
-        res?.card?.card["@type"]?.includes("food.v2.Restaurant")
+        res?.card?.card["@type"]?.includes("food.v2.Restaurant") ||
+        (res?.card?.card?.info?.id && res?.card?.card?.info?.id == resId) ||
+        res?.card?.card?.info?.name
       );
 
       const restOffer = json?.data?.cards?.find((res) =>
         res?.card?.card?.gridElements?.infoWithStyle["@type"]?.includes(
           "food.v2.OfferInfoWithStyle"
-        )
+        ) || res?.card?.card?.gridElements?.infoWithStyle?.offers
       );
 
       const restMenus = json?.data?.cards?.find((res) =>
-        res?.groupedCard?.cardGroupMap?.REGULAR?.cards.filter((menu) =>
-          menu?.card?.card["@type"]?.includes("food.v2.ItemCategory")
+        res?.groupedCard?.cardGroupMap?.REGULAR?.cards?.filter((menu) =>
+          menu?.card?.card["@type"]?.includes("ItemCategory") || 
+          menu?.card?.card?.itemCards
         )
       );
 
