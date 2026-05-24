@@ -1,11 +1,16 @@
-import { Outlet } from "react-router-dom"
+import { Outlet, Navigate } from "react-router-dom"
 
 const AuthLayout = () => {
+  const currentUser = localStorage.getItem("currentUser");
+
+  if (currentUser) {
+    return <Navigate to="/" replace />;
+  }
+
   return (
-    <div>
-      Auth
+    <>
       <Outlet/>
-    </div>
+    </>
   )
 }
 

@@ -31,7 +31,23 @@ const MobileNavLink = ({pathname, onClose}) => {
         {
           navLinks.map(({id, Icon, path, text}) => {
             if (path === "/sign-in" && currentUser) {
-              return <AccountMenu key={id} currentUser={currentUser} onClose={onClose} />;
+              return (
+                <div key={id} className="flex flex-col gap-5 w-full">
+                  <div className="flex items-center gap-2 text-base font-semibold text-slate-800 dark:text-white px-2">
+                    <Icon className="text-xl" />
+                    Hi, {currentUser.name.split(" ")[0]}
+                  </div>
+                  <button
+                    onClick={() => {
+                      localStorage.removeItem("currentUser");
+                      window.location.href = "/sign-in";
+                    }}
+                    className="text-left font-semibold text-red-500 w-full px-2"
+                  >
+                    Logout
+                  </button>
+                </div>
+              );
             }
             return <Navlink onClose={onClose} key={id} Icon={Icon} pathname={pathname} path={path} text={text}/>
           })

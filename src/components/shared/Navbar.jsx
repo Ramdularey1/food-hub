@@ -53,7 +53,23 @@ const Navbar = () => {
         {
           navLinks.map(({ id, Icon, path, text }) => {
             if (path === "/sign-in" && currentUser) {
-              return <AccountMenu key={id} currentUser={currentUser} onClose={() => setIsNavMenuOpen(false)} />;
+              return (
+                <div key={id} className="flex-center gap-4">
+                  <div className="flex-center gap-1 text-base font-semibold text-white px-2">
+                    <Icon className="text-xl" />
+                    {currentUser.name.split(" ")[0]}
+                  </div>
+                  <button
+                    onClick={() => {
+                      localStorage.removeItem("currentUser");
+                      window.location.href = "/sign-in"; // reload cleanly
+                    }}
+                    className="flex-center gap-1 text-base font-semibold text-white hover:bg-red-600 hover:text-white bg-red-500 py-1 px-3 rounded-lg transition-all"
+                  >
+                    Logout
+                  </button>
+                </div>
+              );
             }
             return <Navlink onClose={() => { setIsNavMenuOpen(false) }} key={id} Icon={Icon} pathname={pathname} path={path} text={text} />;
           })
