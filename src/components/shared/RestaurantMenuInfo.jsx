@@ -2,7 +2,7 @@ import MenuItems from "./MenuItems";
 import { v4 as uuidv4 } from "uuid";
 
 const RestaurantMenuInfo = ({menuInfo, resCart}) => {
-  const menuCards = menuInfo || [];
+  const menuCards = Array.isArray(menuInfo) ? menuInfo : [];
   
   return (
     menuCards.map((menu) => {
@@ -12,7 +12,7 @@ const RestaurantMenuInfo = ({menuInfo, resCart}) => {
         return <MenuItems {...card} resCart={resCart} key={uuidv4()} />;
       }
 
-      if (card?.categories) {
+      if (Array.isArray(card?.categories)) {
         return card.categories.map((category) =>
           category?.itemCards ? (
             <MenuItems {...category} resCart={resCart} key={uuidv4()} />

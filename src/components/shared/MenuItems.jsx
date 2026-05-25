@@ -16,6 +16,7 @@ import RestFreshPopup from "./RestFreshPopup";
 
 const MenuItems = (card) => {
   const { title, itemCards, resCart } = card;
+  const menuItems = Array.isArray(itemCards) ? itemCards : [];
   const [showMenu, setShowMenu] = useState(true);
   const [showPopUp, setShowPopUp] = useState(false);
   const [popItem, setPopItem] = useState(null);
@@ -68,7 +69,7 @@ const MenuItems = (card) => {
           className="flex w-full items-center justify-between"
         >
           <span className="text-lg font-bold text-white md:text-xl">
-            {title + " "} {"(" + itemCards.length + ")"}
+            {title + " "} {"(" + menuItems.length + ")"}
           </span>
           <span className="text-xl text-slate-200 md:text-2xl">
             {showMenu ? <GoChevronUp /> : <GoChevronDown />}
@@ -76,7 +77,7 @@ const MenuItems = (card) => {
         </button>
         <div className="mt-5 flex flex-col gap-6">
           {showMenu &&
-            itemCards.map((card) => {
+            menuItems.map((card) => {
               const isVeg = card?.card?.info?.itemAttribute?.vegClassifier;
               const name = card?.card?.info?.name;
               const isBestseller = card?.card?.info?.isBestseller;
