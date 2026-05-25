@@ -1,7 +1,6 @@
 import { useRef } from 'react';
 import { navLinks } from '../../utils/constants';
 import Navlink from './Navlink';
-import AccountMenu from './AccountMenu';
 import { RxCross1 } from 'react-icons/rx';
 
 const MobileNavLink = ({pathname, onClose}) => {
@@ -16,24 +15,30 @@ const MobileNavLink = ({pathname, onClose}) => {
   }
   
   return (
-    <div onClick={handleShowMenu} ref={menuRef} className="lg:hidden fixed inset-0 flex justify-end items-start bg-black bg-opacity-30 backdrop-blur-sm z-50">
-      <div className=" w-full max-w-xs mt-4 mr-4 bg-white rounded-lg shadow-lg p-6 text-base font-semibold text-slate-900 dark:bg-slate-800 dark:text-slate-400 dark:highlight-white/5 flex flex-col">
+    <div onClick={handleShowMenu} ref={menuRef} className="fixed inset-0 z-50 flex items-start justify-end bg-black/50 backdrop-blur-sm lg:hidden">
+      <div className="mr-4 mt-4 flex w-full max-w-xs flex-col rounded-lg border border-white/10 bg-[#101522] p-5 text-base font-semibold text-slate-200 shadow-2xl">
+        <div className="mb-5 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <img className="size-10" src="/assets/logo.svg" alt="Food Hub logo" />
+            <span className="font-bold text-white">Food Hub</span>
+          </div>
         <button
           onClick={onClose}
           type="button"
-          className=" self-end text-slate-500 hover:text-slate-600 dark:text-slate-400 dark:hover:text-slate-300 text-2xl sm:text-3xl"
+          className="rounded-lg p-2 text-2xl text-slate-300 transition hover:bg-white/10 hover:text-white"
           tabIndex={0}
         >
           <span className="sr-only">Close navigation</span>
           <RxCross1 />
         </button>
-        <ul className="space-y-7 my-2 flex flex-col items-start w-full">
+        </div>
+        <ul className="my-2 flex w-full flex-col items-stretch gap-2">
         {
           navLinks.map(({id, Icon, path, text}) => {
             if (path === "/sign-in" && currentUser) {
               return (
-                <div key={id} className="flex flex-col gap-5 w-full">
-                  <div className="flex items-center gap-2 text-base font-semibold text-slate-800 dark:text-white px-2">
+                <div key={id} className="flex w-full flex-col gap-3 rounded-lg border border-white/10 bg-white/[0.04] p-3">
+                  <div className="flex items-center gap-2 text-base font-semibold text-white">
                     <Icon className="text-xl" />
                     Hi, {currentUser.name.split(" ")[0]}
                   </div>
@@ -42,7 +47,7 @@ const MobileNavLink = ({pathname, onClose}) => {
                       localStorage.removeItem("currentUser");
                       window.location.href = "/sign-in";
                     }}
-                    className="text-left font-semibold text-red-500 w-full px-2"
+                    className="rounded-lg bg-orange-600 px-3 py-2 text-left font-bold text-white transition hover:bg-orange-700"
                   >
                     Logout
                   </button>

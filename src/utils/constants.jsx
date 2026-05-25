@@ -58,10 +58,10 @@ export const IMG_RESTAURANT_NOT_URL =
 
 	export const swiggyFaqs = [
 		{
-		  question: "How do I place an order on Hunger Hero ?",
+		  question: "How do I place an order on Food Hub ?",
 		  answer: (
 			<>
-			  1. Go to the Hunger Hero website.
+			  1. Go to the Food Hub website.
 			  <br />
 			  2. Browse restaurants and choose your desired items.
 			  <br />
@@ -74,18 +74,18 @@ export const IMG_RESTAURANT_NOT_URL =
 		  ),
 		},
 		{
-		  question: "What are the delivery charges on Hunger Hero ?",
+		  question: "What are the delivery charges on Food Hub ?",
 		  answer:
-			"Delivery charges on Hunger Hero  vary depending on the restaurant, distance, and order value. You can see the estimated delivery charge before placing your order.",
+			"Delivery charges on Food Hub vary depending on the restaurant, distance, and order value. You can see the estimated delivery charge before placing your order.",
 		},
 		{
-		  question: "What are the payment options available on Hunger Hero ?",
+		  question: "What are the payment options available on Food Hub ?",
 		  answer:
-			"Hunger Hero  accepts various payment methods, including cash on delivery, credit/debit cards, UPI, and online wallets.",
+			"Food Hub accepts various payment methods, including cash on delivery, credit/debit cards, UPI, and online wallets.",
 		},
 		{
-		  question: "How can I track my order on Hunger Hero ?",
+		  question: "How can I track my order on Food Hub ?",
 		  answer:
-			"You can track your order in real-time through the Hunger Hero website. You will receive notifications about the order's progress.",
+			"You can track your order in real-time through the Food Hub website. You will receive notifications about the order's progress.",
 		},
 	  ];

@@ -9,13 +9,15 @@ import { IMG_URL } from "../../utils/constants";
 const RestaurantMenu = () => {
   const { restaurantID } = useParams();
   const menu = useRestaurant(restaurantID);
-console.log(" RESTAURANT MENU:", menu);
+  const restaurantInfo = menu?.restInfo?.card?.card?.info;
   const resCart = {
-    name: menu?.restInfo?.card?.card?.info?.name,
-    id: menu?.restInfo?.card?.card?.info?.id,
-    areaName: menu?.restInfo?.card?.card?.info?.areaName,
-    imgUrl: IMG_URL + menu?.restInfo?.card?.card?.info?.cloudinaryImageId,
-    distance: menu?.restInfo?.card?.card?.info?.sla,
+    name: restaurantInfo?.name,
+    id: restaurantInfo?.id || restaurantID,
+    areaName: restaurantInfo?.areaName,
+    imgUrl: restaurantInfo?.cloudinaryImageId
+      ? IMG_URL + restaurantInfo?.cloudinaryImageId
+      : "/assets/image.png",
+    distance: restaurantInfo?.sla,
   };
 
   if (!menu) {
@@ -48,7 +50,8 @@ console.log(" RESTAURANT MENU:", menu);
       </Link>
     </section>
   ) : (
-    <section className="max-w-[800px] mx-auto px-4 pt-[120px]">
+    <main className="min-h-screen bg-[#080b12] text-white">
+    <section className="mx-auto max-w-[860px] px-4 pb-16 pt-32 lg:pt-36">
       <RestaurantProfileOffer
         offers={
           menu?.restOffer?.card?.card?.gridElements?.infoWithStyle?.offers
@@ -60,6 +63,7 @@ console.log(" RESTAURANT MENU:", menu);
         resCart={resCart}
       />
     </section>
+    </main>
   );
 };
 

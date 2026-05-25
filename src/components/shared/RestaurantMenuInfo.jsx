@@ -2,11 +2,25 @@ import MenuItems from "./MenuItems";
 import { v4 as uuidv4 } from "uuid";
 
 const RestaurantMenuInfo = ({menuInfo, resCart}) => {
+  const menuCards = menuInfo || [];
   
   return (
-    menuInfo.map((menu) => {
-        return menu?.card?.card?.itemCards ? <MenuItems {...menu?.card?.card}
-        resCart={resCart} key={uuidv4()} /> : null;
+    menuCards.map((menu) => {
+      const card = menu?.card?.card;
+
+      if (card?.itemCards) {
+        return <MenuItems {...card} resCart={resCart} key={uuidv4()} />;
+      }
+
+      if (card?.categories) {
+        return card.categories.map((category) =>
+          category?.itemCards ? (
+            <MenuItems {...category} resCart={resCart} key={uuidv4()} />
+          ) : null
+        );
+      }
+
+      return null;
     })
   )
 }

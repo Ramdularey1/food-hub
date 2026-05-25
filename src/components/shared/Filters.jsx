@@ -4,9 +4,16 @@ import { RxCross2 } from "react-icons/rx";
 
 const Filter = ({Restaurant, setRestaurant, setShowExtraData}) => {
     const [filter, setFilter] = useState("filter");
+    const chipClass = (name) =>
+        `flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-bold transition ${
+            filter == name
+                ? "border-orange-400 bg-orange-500 text-white"
+                : "border-white/10 bg-white/[0.05] text-slate-200 hover:border-orange-400/60 hover:bg-white/[0.09]"
+        }`;
+
     return (
         <>
-            <button className={`flex gap-1 lg:gap-2 items-center border px-2 lg:px-3 py-1 rounded-full bg-gray-100 hover:bg-gray-200 hover:scale-105 transition-all delay-200 text-sm lg:text-base ${filter == "Fast" && "bg-gray-200 hover:bg-white border-gray-900"}`}
+            <button className={chipClass("Fast")}
                 onClick={() => {
                     findRestaurantsFast(
                         Restaurant,
@@ -20,9 +27,9 @@ const Filter = ({Restaurant, setRestaurant, setShowExtraData}) => {
                 id={filter == "Fast" ? "filterSelected" : ""}
             >
                 Fast Delivery
-                {filter == "Fast" && <RxCross2 className="border rounded-full border-gray-400" />}
+                {filter == "Fast" && <RxCross2 />}
             </button>
-            <button className={`flex gap-1 lg:gap-2 items-center border px-2 lg:px-3 py-1 rounded-full bg-gray-100 hover:bg-gray-200 hover:scale-105 transition-all delay-200 text-sm lg:text-base ${filter == "Rating" && "bg-gray-200 hover:bg-white border-gray-900"}`}
+            <button className={chipClass("Rating")}
                 onClick={() => {
                     findRestaurantsFast(
                         Restaurant,
@@ -37,9 +44,9 @@ const Filter = ({Restaurant, setRestaurant, setShowExtraData}) => {
                 id={filter == "Rating" ? "filterSelected" : ""}
             >
                 Ratings 4.0+
-                {filter == "Rating" && <RxCross2 className="border rounded-full border-gray-400" />}
+                {filter == "Rating" && <RxCross2 />}
             </button>
-            <button className={`flex gap-1 lg:gap-2 items-center border px-2 lg:px-3 py-1 rounded-full bg-gray-100 hover:bg-gray-200 hover:scale-105 transition-all delay-200 text-sm lg:text-base ${filter == "Offer" && "bg-gray-200 hover:bg-white border-gray-900"}`}
+            <button className={chipClass("Offer")}
                 onClick={() => {
                     findRestaurantsFast(
                         Restaurant,
@@ -54,9 +61,9 @@ const Filter = ({Restaurant, setRestaurant, setShowExtraData}) => {
                 id={filter == "Offer" ? "filterSelected" : ""}
             >
                 Offers
-                {filter == "Offer" && <RxCross2 className="border rounded-full border-gray-400" />}
+                {filter == "Offer" && <RxCross2 />}
             </button>
-            <button className={`flex gap-1 lg:gap-2 items-center border px-2 lg:px-3 py-1 rounded-full bg-gray-100 hover:bg-gray-200 hover:scale-105 transition-all delay-200 text-sm lg:text-base ${filter == "Veg" && "bg-gray-200 hover:bg-white border-gray-900"}`}
+            <button className={chipClass("Veg")}
                 onClick={() => {
                     findRestaurantsFast(
                         Restaurant,
@@ -71,9 +78,9 @@ const Filter = ({Restaurant, setRestaurant, setShowExtraData}) => {
                 id={filter == "Veg" ? "filterSelected" : ""}
             >
                 Pure Veg
-                {filter == "Veg" && <RxCross2 className="border rounded-full border-gray-400" />}
+                {filter == "Veg" && <RxCross2 />}
             </button>
-            <button className={`flex gap-1 lg:gap-2 items-center border px-2 lg:px-3 py-1 rounded-full bg-gray-100 hover:bg-gray-200 hover:scale-105 transition-all delay-200 text-sm lg:text-base ${filter == "less300" && "bg-gray-200 hover:bg-white border-gray-900"}`}
+            <button className={chipClass("less300")}
                 onClick={() => {
                     findRestaurantsLess300(
                         Restaurant,
@@ -87,10 +94,10 @@ const Filter = ({Restaurant, setRestaurant, setShowExtraData}) => {
                 }}
                 id={filter == "less300" ? "filterSelected" : ""}
             >
-                Less then Rs.300
-                {filter == "less300" && <RxCross2 className="border rounded-full border-gray-400" />}
+                Under Rs.300
+                {filter == "less300" && <RxCross2 />}
             </button>
-            <button className={`flex gap-1 lg:gap-2 items-center border px-2 lg:px-3 py-1 rounded-full bg-gray-100 hover:bg-gray-200 hover:scale-105 transition-all delay-200 text-sm lg:text-base ${filter == "300to600" && "bg-gray-200 hover:bg-white border-gray-900"}`}
+            <button className={chipClass("300to600")}
                 onClick={() => {
                     findRestaurantsLess300(
                         Restaurant,
@@ -104,8 +111,8 @@ const Filter = ({Restaurant, setRestaurant, setShowExtraData}) => {
                 }}
                 id={filter == "300to600" ? "filterSelected" : ""}
             >
-                Rs.300-Rs.600
-                {filter == "300to600" && <RxCross2 className="border rounded-full border-gray-400" />}
+                Rs.300 - Rs.600
+                {filter == "300to600" && <RxCross2 />}
             </button>
         </>
     );

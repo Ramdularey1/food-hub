@@ -9,24 +9,34 @@ const RestaurantCard = ({ info }) => {
     setImageLoaded(true);
   };
 
+  const storeRestaurantInfo = () => {
+    try {
+      sessionStorage.setItem("selectedRestaurant", JSON.stringify(info));
+      sessionStorage.setItem(`restaurant-${info.id}`, JSON.stringify(info));
+    } catch (error) {
+      console.error("Unable to save restaurant info", error);
+    }
+  };
+
   return (
     <Link
       onClick={() => {
+        storeRestaurantInfo();
         handleScrollTop();
       }}
-      className="hover:scale-95 transition-all duration-300"
+      className="group block transition duration-300 hover:-translate-y-1"
       to={"/restaurant/" + info.id}
     >
-      <div className=" w-[270px] md:w-80 p-2 min-h-[280px]">
+      <div className="min-h-[310px] w-[270px] overflow-hidden rounded-lg border border-white/10 bg-white/[0.04] p-2 shadow-lg shadow-black/10 transition group-hover:border-orange-400/50 group-hover:bg-white/[0.07] md:w-80">
         <div className="relative w-full">
           <div
-            className={`w-full h-[191px] bg-gradient-to-tr from-gray-400 to-gray-800 rounded-xl ${
+            className={`h-[191px] w-full rounded-lg bg-slate-800 ${
               imageLoaded ? "hidden" : ""
             }`}
           ></div>
 
           <img
-            className={`w-full h-[191px] object-cover rounded-xl relative ${
+            className={`relative h-[191px] w-full rounded-lg object-cover ${
               imageLoaded ? "" : "hidden"
             }`}
             src={IMG_URL + info?.cloudinaryImageId}
@@ -36,24 +46,24 @@ const RestaurantCard = ({ info }) => {
           />
 
           {info?.aggregatedDiscountInfoV3 && (
-            <div className="absolute top-[-4px] border border-gray-700  left-[-6px]  py-1 px-2 rounded-xl text-white  bg-gradient-to-r from-slate-700 to-gray-800">
-              <span className="font-bold text-sm lg:text-lg">
+            <div className="absolute left-3 top-3 rounded-lg border border-white/10 bg-black/70 px-3 py-1 text-white shadow-lg backdrop-blur">
+              <span className="text-sm font-bold">
                 {info?.aggregatedDiscountInfoV3?.header}{" "}
                 {info?.aggregatedDiscountInfoV3?.subHeader}
               </span>
             </div>
           )}
         </div>
-        <div className="w-full px-4 mt-2">
-          <h3 className="text-base lg:text-lg font-semibold text-gray-100 truncate">
+        <div className="mt-4 w-full px-2 pb-2">
+          <h3 className="truncate text-base font-bold text-white lg:text-lg">
             {info?.name}
           </h3>
 
-          <p className="flex items-center gap-[2px] lg:gap-1 text-sm lg:text-base font-semibold text-gray-200">
-            <span className="flex items-center gap-[2px]">
+          <p className="mt-2 flex items-center gap-2 text-sm font-semibold text-slate-200">
+            <span className="flex items-center gap-1 rounded-md bg-emerald-500/15 px-2 py-1 text-emerald-300">
               <svg
-                width="20"
-                height="20"
+                width="16"
+                height="16"
                 viewBox="0 0 20 20"
                 fill="none"
                 role="img"
@@ -86,12 +96,12 @@ const RestaurantCard = ({ info }) => {
               </svg>
               {info?.avgRating}
             </span>{" "}
-            •<span>{info?.sla?.slaString}</span>
+            <span className="text-slate-400">{info?.sla?.slaString}</span>
           </p>
-          <p className="mt-1 truncate text-sm lg:text-base font-light text-gray-300">
+          <p className="mt-3 truncate text-sm text-slate-300">
             {info?.cuisines?.join(", ")}
           </p>
-          <p className=" truncate font-light text-sm lg:text-base text-gray-300">
+          <p className="mt-1 truncate text-sm text-slate-400">
             {info?.areaName}
           </p>
         </div>

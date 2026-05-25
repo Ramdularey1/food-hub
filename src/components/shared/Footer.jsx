@@ -1,17 +1,17 @@
 const Footer = () => {
     return (
-        <footer className="bg-slate-900 text-white py-[100px] sm:py-[150px] mt-10 *:select-none">
-            <div className="container mx-auto flex flex-wrap px-4 justify-between">
+        <footer className="mt-10 border-t border-white/10 bg-[#0b0f19] py-16 text-white *:select-none">
+            <div className="container mx-auto flex flex-wrap justify-between gap-8 px-4">
                 <div className="w-full sm:w-1/2 md:w-1/4 lg:w-1/5 mb-6 sm:mb-0">
-                    <img src={"/assets/logo.svg"} alt="logo" className="w-12 sm:w-14 md:w-20" />
-                    <h4 className="font-berkshire text-lg sm:text-2xl xl:text-3xl font-bold mb-4 mt-2 text-white select-none ">
-                        Hunger Hero
+                    <img src={"/assets/logo.svg"} alt="logo" className="w-14" />
+                    <h4 className="mb-4 mt-3 text-2xl font-bold text-white">
+                        Food Hub
                     </h4>
                 </div>
 
                 <div className="w-full sm:w-1/2 md:w-1/4 lg:w-1/5 mb-6 sm:mb-0">
-                    <h4 className="text-base sm:text-xl font-bold mb-4">Company</h4>
-                    <ul className="text-gray-400 *:text-sm sm:text-base">
+                    <h4 className="mb-4 text-base font-bold sm:text-xl">Company</h4>
+                    <ul className="space-y-2 text-slate-400 *:text-sm sm:text-base">
                         <li className="hover:opacity-80">
                             <a href="#">About</a>
                         </li>
@@ -22,20 +22,20 @@ const Footer = () => {
                             <a href="#">Team</a>
                         </li>
                         <li className="hover:opacity-80">
-                            <a href="#">Hunger Hero One</a>
+                            <a href="#">Food Hub One</a>
                         </li>
                         <li className="hover:opacity-80">
-                            <a href="#">Hunger Hero Instamart</a>
+                            <a href="#">Food Hub Instamart</a>
                         </li>
                         <li className="hover:opacity-80">
-                            <a href="#">Hunger Hero Genie</a>
+                            <a href="#">Food Hub Genie</a>
                         </li>
                     </ul>
                 </div>
 
                 <div className="w-full sm:w-1/2 md:w-1/4 lg:w-1/5 mb-6 sm:mb-0">
-                    <h4 className="text-base sm:text-xl font-bold mb-4">Contact us</h4>
-                    <ul className="text-gray-400 *:text-sm sm:text-base">
+                    <h4 className="mb-4 text-base font-bold sm:text-xl">Contact us</h4>
+                    <ul className="space-y-2 text-slate-400 *:text-sm sm:text-base">
                         <li className="hover:opacity-80">
                             <a href="#">Help & Support</a>
                         </li>
@@ -49,8 +49,8 @@ const Footer = () => {
                 </div>
 
                 <div className="w-full sm:w-1/2 md:w-1/4 lg:w-1/5 mb-6 sm:mb-0">
-                    <h4 className="text-base sm:text-xl font-bold mb-4">Legal</h4>
-                    <ul className="text-gray-400 *:text-sm sm:text-base">
+                    <h4 className="mb-4 text-base font-bold sm:text-xl">Legal</h4>
+                    <ul className="space-y-2 text-slate-400 *:text-sm sm:text-base">
                         <li className="hover:opacity-80">
                             <a href="#">Terms & Conditions</a>
                         </li>
@@ -64,9 +64,9 @@ const Footer = () => {
                 </div>
 
                 <div className="w-full sm:w-1/2 md:w-1/4 lg:w-1/5 mb-6 sm:mb-0">
-                    <h4 className="text-base sm:text-xl font-bold mb-4">We deliver to:</h4>
+                    <h4 className="mb-4 text-base font-bold sm:text-xl">We deliver to:</h4>
                     <div className="relative">
-                        <select className="block w-full cursor-pointer   bg-slate-700 border border-gray-300 rounded-md p-2 focus:outline-none focus:border-blue-500 appearance-none">
+                        <select className="block w-full cursor-pointer appearance-none rounded-lg border border-white/10 bg-white/[0.06] p-3 text-sm text-white outline-none focus:border-orange-400">
                             <option disabled defaultValue={"Lucknow"}>
                                 Select a city
                             </option>

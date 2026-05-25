@@ -113,19 +113,19 @@ const Home = () => {
   return allRestaurants.length === 0 ? (
     <HomeShimmer />
   ) : (
-    <>
+    <main className="min-h-screen bg-[#080b12] text-white">
       {allRestaurants[0] && (
-        <section className="pt-[120px] border-b border-b-gray-200 container mx-auto ">
-          <div className="*:text-gray-50 flex justify-between px-2 lg:px-4 items-center">
-            <h2 className="text-xl sm:text-2xl md:text-3xl  font-bold">
+        <section className="container mx-auto border-b border-white/10 px-4 pb-8 pt-32 lg:pt-36">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-bold text-white sm:text-2xl md:text-3xl">
               {allRestaurants[0]?.title}
             </h2>
-            <div className="flex gap-4 text-2xl md:text-3xl ">
+            <div className="flex gap-2 text-2xl">
               <button
                 onClick={() => {
                   scrollHandler("left", carouselRef);
                 }}
-                className="hover:text-gray-200 hover:scale-110 duration-200 ease-in transition-all cursor-pointer disabled:text-gray-500 disabled:hover:text-gray-600"
+                className="rounded-lg border border-white/10 bg-white/[0.05] p-2 text-slate-200 transition hover:border-orange-400/60 hover:text-white"
               >
                 <BsFillArrowLeftCircleFill />
               </button>
@@ -133,13 +133,13 @@ const Home = () => {
                 onClick={() => {
                   scrollHandler("right", carouselRef);
                 }}
-                className="hover:text-gray-200 hover:scale-110 duration-200 ease-in transition-all cursor-pointer disabled:text-gray-500 disabled:hover:text-gray-600"
+                className="rounded-lg border border-white/10 bg-white/[0.05] p-2 text-slate-200 transition hover:border-orange-400/60 hover:text-white"
               >
                 <BsFillArrowRightCircleFill />
               </button>
             </div>
           </div>
-          <div className="w-full  my-5">
+          <div className="my-6 w-full">
             <div
               ref={carouselRef}
               className="flex overflow-x-scroll overflow-y-hidden scroll-smooth rounded-lg scrollbar-hide"
@@ -173,17 +173,17 @@ const Home = () => {
         </section>
       )}
       {allRestaurants[2] && (
-        <section className="mt-10 border-b border-b-gray-200 container mx-auto">
-          <div className="*:text-gray-50 flex justify-between px-2 lg:px-4">
-            <h2 className="text-2xl md:text-3xl font-bold">
+        <section className="container mx-auto mt-10 border-b border-white/10 px-4 pb-8">
+          <div className="flex justify-between">
+            <h2 className="text-2xl font-bold text-white md:text-3xl">
               {allRestaurants[2]?.title}
             </h2>
-            <div className="flex gap-4 text-2xl md:text-3xl ">
+            <div className="flex gap-2 text-2xl">
               <button
                 onClick={() => {
                   scrollHandler("left", topRestRef);
                 }}
-                className="hover:text-gray-200 hover:scale-110 duration-200 ease-in transition-all cursor-pointer disabled:text-gray-500 disabled:hover:text-gray-600"
+                className="rounded-lg border border-white/10 bg-white/[0.05] p-2 text-slate-200 transition hover:border-orange-400/60 hover:text-white"
               >
                 <BsFillArrowLeftCircleFill />
               </button>
@@ -191,16 +191,16 @@ const Home = () => {
                 onClick={() => {
                   scrollHandler("right", topRestRef);
                 }}
-                className="hover:text-gray-200 hover:scale-110 duration-200 ease-in transition-all cursor-pointer disabled:text-gray-500 disabled:hover:text-gray-600"
+                className="rounded-lg border border-white/10 bg-white/[0.05] p-2 text-slate-200 transition hover:border-orange-400/60 hover:text-white"
               >
                 <BsFillArrowRightCircleFill />
               </button>
             </div>
           </div>
-          <div className="w-full  my-5">
+          <div className="my-6 w-full">
             <div
               ref={topRestRef}
-              className="flex gap-1 lg:gap-4 overflow-x-scroll scroll-smooth scrollbar-hide"
+              className="flex gap-4 overflow-x-scroll scroll-smooth scrollbar-hide"
             >
               {allRestaurants[3].map((restaurant) => (
                 <RestaurantCard
@@ -212,13 +212,16 @@ const Home = () => {
           </div>
         </section>
       )}
-      <section className="my-10 mt-40 container mx-auto pt-[80px] sm:pt-0">
+      <section className="container mx-auto px-4 py-12">
         <div>
-          <h2 className="text-xl sm:text-2xl md:text-3xl text-gray-50  font-bold">
+          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-orange-300">
+            Explore
+          </p>
+          <h2 className="mt-2 text-2xl font-bold text-white sm:text-3xl">
             {allRestaurants[4]?.title}
           </h2>
         </div>
-        <div className="w-full my-3 lg:my-5 flex flex-wrap gap-1 lg:gap-2">
+        <div className="my-6 flex w-full flex-wrap gap-2">
           <Filters
             Restaurant={allRestaurants[5]}
             setRestaurant={setFilteredRestaurants}
@@ -226,7 +229,7 @@ const Home = () => {
           />
         </div>
         {filteredRestaurants?.length !== 0 ? (
-          <div className=" flex flex-wrap sm:grid  grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-items-center gap-6">
+          <div className="grid grid-cols-1 place-items-center gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {filteredRestaurants.map((restaurant) => (
               <RestaurantCard info={restaurant.info} key={uuidv4()} />
             ))}
@@ -252,7 +255,7 @@ const Home = () => {
         )}
       </section>
       <Footer />
-    </>
+    </main>
   );
 };
 

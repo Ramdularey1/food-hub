@@ -9,7 +9,6 @@ import DetectLocation from "./DetectLocation";
 import MobileNavLink from "./MobileNavLink";
 import { navLinks } from "../../utils/constants";
 import Navlink from "./Navlink";
-import AccountMenu from "./AccountMenu";
 
 const Navbar = () => {
   const { pathname } = useLocation();
@@ -28,15 +27,17 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="fixed  z-50 left-0 right-0 top-0   bg-black border-b shadow-md ">
-      <div className="max-w-[1440px] flex-between lg:py-3 px-5 mx-auto">
-        {/* for logo and the location */}
-      <div className="flex-center gap-3">
-        <Link to={"/"} className={`w-[48px] sm:w-14 `}><img src="/assets/logo.svg" alt="logo" /></Link>
-        <div className={`flex-center gap-2 border p-1 rounded-md text-white border-gray-100 bg-black hover:bg-gray-900 delay-100 transition-all`}>
-          <div className="flex-center gap-[1px] sm:gap-[2px] text-xs  sm:text-sm "><FaLocationDot className="text-red-700 text-base" /><span className=" text-white">{userLocation?.city || "Delhi"}</span></div>
+    <nav className="fixed left-0 right-0 top-0 z-50 border-b border-white/10 bg-[#080b12]/95 shadow-lg shadow-black/20 backdrop-blur-xl">
+      <div className="mx-auto flex h-20 max-w-[1440px] items-center justify-between px-4 sm:px-6 lg:h-24">
+      <div className="flex items-center gap-4">
+        <Link to={"/"} className="flex items-center gap-3">
+          <img className="size-12 sm:size-14" src="/assets/logo.svg" alt="Food Hub logo" />
+          <span className="hidden text-xl font-bold text-white sm:block">Food Hub</span>
+        </Link>
+        <div className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.06] px-3 py-2 text-white transition hover:border-orange-400/60 hover:bg-white/[0.09]">
+          <div className="flex items-center gap-2 text-xs font-semibold sm:text-sm"><FaLocationDot className="text-orange-500" /><span>{userLocation?.city || "Delhi"}</span></div>
           <div className="flex-center">
-            <button onClick={showSetLocationMenu}>
+            <button className="text-slate-300 hover:text-white" onClick={showSetLocationMenu}>
               {openLocationMenu ? <TiArrowSortedUp /> : <TiArrowSortedDown />}
             </button>
           </div>
@@ -49,13 +50,13 @@ const Navbar = () => {
       {/* for nav links eg. Offers, Cart and more */}
 
       {/* for width >= 1024px */}
-      <ul className=" gap-4 hidden lg:flex-center">
+      <ul className="hidden items-center gap-2 lg:flex">
         {
           navLinks.map(({ id, Icon, path, text }) => {
             if (path === "/sign-in" && currentUser) {
               return (
-                <div key={id} className="flex-center gap-4">
-                  <div className="flex-center gap-1 text-base font-semibold text-white px-2">
+                <div key={id} className="flex items-center gap-3">
+                  <div className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.06] px-3 py-2 text-sm font-semibold text-white">
                     <Icon className="text-xl" />
                     {currentUser.name.split(" ")[0]}
                   </div>
@@ -64,7 +65,7 @@ const Navbar = () => {
                       localStorage.removeItem("currentUser");
                       window.location.href = "/sign-in"; // reload cleanly
                     }}
-                    className="flex-center gap-1 text-base font-semibold text-white hover:bg-red-600 hover:text-white bg-red-500 py-1 px-3 rounded-lg transition-all"
+                    className="rounded-lg bg-orange-600 px-4 py-2 text-sm font-bold text-white transition hover:bg-orange-700"
                   >
                     Logout
                   </button>
@@ -77,9 +78,9 @@ const Navbar = () => {
       </ul>
 
       {/* for width <= 1024px */}
-      <div className="lg:hidden my-6">
+      <div className="lg:hidden">
         <button
-          className={`flex-center transition-opacity duration-300 text-2xl sm:text-3xl`}
+          className="rounded-lg border border-white/10 bg-white/[0.06] p-2 text-2xl text-white transition hover:bg-white/[0.1] sm:text-3xl"
           onClick={handleMobileNavbar}
         >
           {isNavMenuOpen ? <RxCross1 className="text-white" /> : <RxHamburgerMenu className="text-white" />}

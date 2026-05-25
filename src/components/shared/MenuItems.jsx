@@ -62,19 +62,19 @@ const MenuItems = (card) => {
   };
   return (
     <>
-      <div className="mt-5">
+      <div className="mt-6 rounded-lg border border-white/10 bg-white/[0.04] p-5">
         <button
           onClick={handleShowMenu}
-          className="flex justify-between items-center w-full"
+          className="flex w-full items-center justify-between"
         >
-          <span className="text-lg md:text-xl font-bold text-gray-200">
+          <span className="text-lg font-bold text-white md:text-xl">
             {title + " "} {"(" + itemCards.length + ")"}
           </span>
-          <span className="text-xl md:text-2xl text-gray-50">
+          <span className="text-xl text-slate-200 md:text-2xl">
             {showMenu ? <GoChevronUp /> : <GoChevronDown />}
           </span>
         </button>
-        <div className="flex flex-col gap-8 mt-5">
+        <div className="mt-5 flex flex-col gap-6">
           {showMenu &&
             itemCards.map((card) => {
               const isVeg = card?.card?.info?.itemAttribute?.vegClassifier;
@@ -86,11 +86,14 @@ const MenuItems = (card) => {
               );
               const description = card?.card?.info?.description;
               const imageID = card?.card?.info?.imageId;
+              const imageUrl = imageID
+                ? IMG_SMALL_URL + imageID
+                : "/assets/imageDefault.png";
               const id = card?.card?.info?.id;
               return (
                 <div key={uuidv4()}>
-                  <div className="flex justify-between items-center border-b pb-6 border-gray-500 w-full">
-                    <div className=" w-[80%]">
+                  <div className="flex w-full items-center justify-between gap-5 border-b border-white/10 pb-6 last:border-b-0">
+                    <div className="min-w-0 flex-1">
                       <div className="flex gap-1 item-center">
                         <img
                           className="w-3 md:w-4"
@@ -102,37 +105,38 @@ const MenuItems = (card) => {
                           alt=""
                         />
                         {isBestseller && (
-                          <span className="text-[#ee9c00] flex items-center gap-1 text-xs sm:text-sm tracking-tighter">
+                          <span className="flex items-center gap-1 text-xs text-orange-300 sm:text-sm">
                             <IoIosStar /> Bestseller
                           </span>
                         )}
                       </div>
                       <p className="flex flex-col">
-                        <span className="text-gray-200 line-clamp-2 text-[15px] sm:text-base">{name}</span>
-                        <span className=" text-sm text-gray-200">
+                        <span className="line-clamp-2 text-[15px] font-bold text-white sm:text-base">{name}</span>
+                        <span className="text-sm font-semibold text-slate-200">
                           &#8377;{price}
                         </span>
                       </p>
-                      <p className=" text-xs sm:text-sm font-light text-gray-300 mt-3">
+                      <p className="mt-3 line-clamp-2 text-xs text-slate-400 sm:text-sm">
                         {description}
                       </p>
                     </div>
                     <div>
-                      <div className="relative size-16 sm:size-20 w-[80px] sm:w-[100px]  rounded-lg bg-slate-800">
+                      <div className="relative size-20 rounded-lg bg-slate-800 sm:size-24">
                         <img
-                          className="w-full h-full  object-cover rounded-lg border border-gray-400"
-                          src={
-                            imageID
-                              ? IMG_SMALL_URL + imageID
-                              : "/assets/image.png"
-                          }
+                          className="h-full w-full rounded-lg border border-white/10 object-cover"
+                          src={imageUrl}
+                          onError={(event) => {
+                            if (!event.currentTarget.src.includes("imageDefault.png")) {
+                              event.currentTarget.src = "/assets/imageDefault.png";
+                            }
+                          }}
                           alt=""
                         />
-                        <div className="absolute rounded-md w-14 h-6  sm:w-16 sm:h-6 bg-slate-800 border border-slate-300 bottom-[-4px] left-0 right-0 mx-auto items-center px-2 flex justify-between shadow-md">
+                        <div className="absolute bottom-[-8px] left-0 right-0 mx-auto flex h-8 w-20 items-center justify-between rounded-lg border border-orange-300/40 bg-[#101522] px-2 shadow-lg">
                           {items?.filter((item) => item[0]?.id === id).length ==
                           0 ? (
                             <button
-                              className="w-full text-white font-semibold"
+                              className="w-full text-sm font-bold text-orange-300"
                               onClick={() => {
                                 addFoodItem(card?.card?.info);
                               }}
@@ -142,19 +146,19 @@ const MenuItems = (card) => {
                           ) : (
                             <>
                               <button
-                                className="text-gray-100 font-extrabold"
+                                className="font-extrabold text-white"
                                 onClick={() => {
                                   decreaseFoodItem(card?.card?.info?.id);
                                 }}
                               >
                                 -
                               </button>
-                              <span className="font-bold text-green-500">
+                              <span className="font-bold text-orange-300">
                                 {items &&
                                   items?.find((item) => item[0].id === id)[1]}
                               </span>
                               <button
-                                className="text-green-500 font-extrabold"
+                                className="font-extrabold text-orange-300"
                                 onClick={() => {
                                   increaseFoodItem(card?.card?.info?.id);
                                 }}
