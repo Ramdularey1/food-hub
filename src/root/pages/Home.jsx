@@ -23,10 +23,6 @@ window.addEventListener("DOMContentLoaded", function () {
 const Home = () => {
   const [allRestaurants, filteredRestaurants, setFilteredRestaurants] =
     useRestaurantsData();
-  const [loadMoreRest, setLoadMoreRest] = useState(false);
-  const [showExtraData, setShowExtraData] = useState(true);
-  const [extraRestsData, setExtraRestsData] = useState(null);
-  const [imageLoaded, setImageLoaded] = useState(false);
   const foodCollections = asArray(allRestaurants?.[1]);
   const topRestaurants = asArray(allRestaurants?.[3]);
   const restaurantTitle = allRestaurants?.[4];
@@ -34,6 +30,10 @@ const Home = () => {
   const additionalRestaurants = asArray(allRestaurants?.[7]);
   const visibleRestaurants = asArray(filteredRestaurants);
   const extraRestaurants = asArray(extraRestsData);
+  const [loadMoreRest, setLoadMoreRest] = useState(false);
+  const [showExtraData, setShowExtraData] = useState(true);
+  const [extraRestsData, setExtraRestsData] = useState(null);
+  const [imageLoaded, setImageLoaded] = useState(false);
   const handleImageLoad = () => {
     setImageLoaded(true);
   };
