@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+<body>
+<script>
+fetch('https://corsproxy.io/?https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=26.87560&lng=80.91150&restaurantId=66861')
+  .then(res => res.json())
+  .then(j => console.log('success', j))
+  .catch(e => console.error(e));
+</script>
+</body>
+</html>
