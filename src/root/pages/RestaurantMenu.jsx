@@ -9,7 +9,7 @@ import { IMG_URL } from "../../utils/constants";
 const RestaurantMenu = () => {
   const { restaurantID } = useParams();
   const menu = useRestaurant(restaurantID);
-
+console.log(" RESTAURANT MENU:", menu);
   const resCart = {
     name: menu?.restInfo?.card?.card?.info?.name,
     id: menu?.restInfo?.card?.card?.info?.id,

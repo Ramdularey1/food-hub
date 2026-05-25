@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
-import { FETCH_MENU_URL } from "../utils/constants";
 import { useSelector } from "react-redux";
-
 
 const useRestaurant = (resId) => {
   const [restaurantMenu, setRestaurantMenu] = useState(null);
@@ -16,15 +14,10 @@ const useRestaurant = (resId) => {
 
   const getRestaurantMenu = async () => {
     try {
-      const data = await fetch(
-        `${FETCH_MENU_URL}lat=${latitude}&lng=${longitude}&restaurantId=${resId}&catalog_qa=undefined&submitAction=ENTER`,
-        {
-            headers: {
-              "x-cors-api-key": "temp_09a95c2e6da960653de51c2deccb8507",
-            },
-          }
-      );
+      const swiggyUrl = `https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=${latitude}&lng=${longitude}&restaurantId=${resId}&catalog_qa=undefined&submitAction=ENTER`;
+      const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(swiggyUrl)}`;
 
+      const data = await fetch(proxyUrl);
       if (!data.ok) {
         throw new Error(`HTTP error! status: ${data.status}`);
       }

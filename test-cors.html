@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<body>
+<script>
+fetch('https://corsproxy.io/?' + encodeURIComponent('https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=26.87560&lng=80.91150&restaurantId=66861&catalog_qa=undefined&submitAction=ENTER'))
+  .then(r => r.json())
+  .then(data => {
+    document.body.innerHTML = '<pre>' + JSON.stringify(data, null, 2).substring(0,2000) + '</pre>';
+  })
+</script>
+</body>
+</html>

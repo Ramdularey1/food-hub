@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { FETCH_SEARCH_URL } from "../utils/constants";
 import useThrottle from "./useThrottle";
 import { useSelector } from "react-redux";
 
@@ -14,22 +13,18 @@ const useSearchOptions = (searchQuery) => {
   useEffect(() => {
     const handleSearch = async () => {
       try {
-        const res = await fetch(
-          `${FETCH_SEARCH_URL}lat=${latitude}&lng=${longitude}&str=${throttleSearchQuery}&trackingId=null`,
-          {
-            headers: {
-              "x-cors-api-key": "temp_09a95c2e6da960653de51c2deccb8507",
-            },
-          }
-        );
+        const swiggyUrl = `https://www.swiggy.com/dapi/restaurants/search/suggest?lat=${latitude}&lng=${longitude}&str=${throttleSearchQuery}&trackingId=null`;
+        const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(swiggyUrl)}`;
+        
+        const res = await fetch(proxyUrl);
         const data = await res.json();
         setSearchData(data?.data?.suggestions);
-        data.data.suggestions.length > 0 && setIsLoading(true);
+        data?.data?.suggestions?.length > 0 && setIsLoading(true);
       } catch (error) {
         console.error("Search error : " + error);
       }
     };
-    // if throttleSearchQuery string length is less than 2 => 0, 1 : simply return don't make any api calls
+
     if (throttleSearchQuery.length <= 2) {
       setSearchData([]);
       setIsLoading(false);
