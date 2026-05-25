@@ -16,44 +16,41 @@ export const getCityName = async (
 };
 
 export const findRestaurants = (search, restaurants) => {
-    const data = (Array.isArray(restaurants) ? restaurants : []).filter((restaurant) => {
+    const data = restaurants.filter((restaurant) => {
         return restaurant.info.name.toLowerCase().includes(search.toLowerCase());
     });
     return data;
 };
 
 export const findRestaurantsFast = (res, setRes, fil, filter, setFilter) => {
-    const restaurants = Array.isArray(res) ? res : [];
     if (fil == filter) {
-        setRes(restaurants);
+        setRes(res);
         setFilter("filter");
     } else {
         setFilter(fil);
-        const data = restaurants.filter(
+        const data = res?.filter(
             (restItem) => restItem?.info?.sla?.deliveryTime <= 25
         );
         setRes(data);
     }
 };
 export const findRestaurantsRating = (res, setRes, fil, filter, setFilter) => {
-    const restaurants = Array.isArray(res) ? res : [];
     if (fil == filter) {
-        setRes(restaurants);
+        setRes(res);
         setFilter("filter");
     } else {
         setFilter(fil);
-        const data = restaurants.filter((restItem) => restItem?.info?.avgRating >= 4);
+        const data = res?.filter((restItem) => restItem?.info?.avgRating >= 4);
         setRes(data);
     }
 };
 export const findRestaurantsOffer = (res, setRes, fil, filter, setFilter) => {
-    const restaurants = Array.isArray(res) ? res : [];
     if (fil == filter) {
-        setRes(restaurants);
+        setRes(res);
         setFilter("filter");
     } else {
         setFilter(fil);
-        const data = restaurants.filter((restItem) =>
+        const data = res?.filter((restItem) =>
             restItem?.info?.aggregatedDiscountInfoV3?.header?.includes("OFF")
         );
         setRes(data);
@@ -61,24 +58,22 @@ export const findRestaurantsOffer = (res, setRes, fil, filter, setFilter) => {
 };
 // ---------
 export const findRestaurantsVeg = (res, setRes, fil, filter, setFilter) => {
-    const restaurants = Array.isArray(res) ? res : [];
     if (fil == filter) {
-        setRes(restaurants);
+        setRes(res);
         setFilter("filter");
     } else {
         setFilter(fil);
-        const data = restaurants.filter((restItem) => restItem?.info?.veg == true);
+        const data = res?.filter((restItem) => restItem?.info?.veg == true);
         setRes(data);
     }
 };
 export const findRestaurantsLess300 = (res, setRes, fil, filter, setFilter) => {
-    const restaurants = Array.isArray(res) ? res : [];
     if (fil == filter) {
-        setRes(restaurants);
+        setRes(res);
         setFilter("filter");
     } else {
         setFilter(fil);
-        const data = restaurants.filter(
+        const data = res?.filter(
             (restItem) =>
                 restItem?.info?.costForTwo?.includes("200") ||
                 restItem?.info?.costForTwo?.includes("250")
@@ -93,13 +88,12 @@ export const findRestaurants300to600 = (
     filter,
     setFilter
 ) => {
-    const restaurants = Array.isArray(res) ? res : [];
     if (fil == filter) {
-        setRes(restaurants);
+        setRes(res);
         setFilter("filter");
     } else {
         setFilter(fil);
-        const data = restaurants.filter(
+        const data = res?.filter(
             (restItem) =>
                 restItem?.info?.costForTwo?.includes("300") ||
                 restItem?.info?.costForTwo?.includes("350") ||

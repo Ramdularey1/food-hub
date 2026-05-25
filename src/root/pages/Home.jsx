@@ -14,8 +14,6 @@ import HomeShimmer from "../../components/shimmers/HomeShimmer";
 import { v4 as uuidv4 } from "uuid";
 import { handleScrollTop } from "../../utils/helper";
 
-const asArray = (value) => (Array.isArray(value) ? value : []);
-
 window.addEventListener("DOMContentLoaded", function () {
   window.scrollTo(0, 0);
 });
@@ -23,13 +21,6 @@ window.addEventListener("DOMContentLoaded", function () {
 const Home = () => {
   const [allRestaurants, filteredRestaurants, setFilteredRestaurants] =
     useRestaurantsData();
-  const foodCollections = asArray(allRestaurants?.[1]);
-  const topRestaurants = asArray(allRestaurants?.[3]);
-  const restaurantTitle = allRestaurants?.[4];
-  const restaurantGrid = asArray(allRestaurants?.[5]);
-  const additionalRestaurants = asArray(allRestaurants?.[7]);
-  const visibleRestaurants = asArray(filteredRestaurants);
-  const extraRestaurants = asArray(extraRestsData);
   const [loadMoreRest, setLoadMoreRest] = useState(false);
   const [showExtraData, setShowExtraData] = useState(true);
   const [extraRestsData, setExtraRestsData] = useState(null);
@@ -43,9 +34,6 @@ const Home = () => {
 
   const scrollHandler = (direction, ref) => {
     const element = ref.current;
-    if (!element) {
-      return;
-    }
     if (direction == "left") {
       element.scrollLeft += -(element.clientWidth - element.clientWidth * 0.15);
     } else {
@@ -65,7 +53,7 @@ const Home = () => {
           setExtraRestsData([]);
           setLoadMoreRest(true);
           setTimeout(() => {
-            setExtraRestsData(additionalRestaurants);
+            setExtraRestsData(allRestaurants[7]);
           }, 2000);
         }
       }
@@ -74,7 +62,7 @@ const Home = () => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [loadMoreRest, allRestaurants, additionalRestaurants]);
+  }, [loadMoreRest, allRestaurants]);
 
   if (!allRestaurants) {
     return (
@@ -126,7 +114,7 @@ const Home = () => {
     <HomeShimmer />
   ) : (
     <main className="min-h-screen bg-[#080b12] text-white">
-      {allRestaurants[0] && foodCollections.length > 0 && (
+      {allRestaurants[0] && (
         <section className="container mx-auto border-b border-white/10 px-4 pb-8 pt-32 lg:pt-36">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-bold text-white sm:text-2xl md:text-3xl">
@@ -156,7 +144,7 @@ const Home = () => {
               ref={carouselRef}
               className="flex overflow-x-scroll overflow-y-hidden scroll-smooth rounded-lg scrollbar-hide"
             >
-              {foodCollections.map((info) => (
+              {allRestaurants[1].map((info) => (
                 <Link
                   onClick={() => {
                     handleScrollTop();
@@ -184,7 +172,7 @@ const Home = () => {
           </div>
         </section>
       )}
-      {allRestaurants[2] && topRestaurants.length > 0 && (
+      {allRestaurants[2] && (
         <section className="container mx-auto mt-10 border-b border-white/10 px-4 pb-8">
           <div className="flex justify-between">
             <h2 className="text-2xl font-bold text-white md:text-3xl">
@@ -214,10 +202,10 @@ const Home = () => {
               ref={topRestRef}
               className="flex gap-4 overflow-x-scroll scroll-smooth scrollbar-hide"
             >
-              {topRestaurants.map((restaurant) => (
+              {allRestaurants[3].map((restaurant) => (
                 <RestaurantCard
-                  info={restaurant?.info}
-                  key={(restaurant?.info?.parentId || restaurant?.info?.id) + uuidv4()}
+                  info={restaurant.info}
+                  key={restaurant.info.parentId + uuidv4()}
                 />
               ))}
             </div>
@@ -230,32 +218,32 @@ const Home = () => {
             Explore
           </p>
           <h2 className="mt-2 text-2xl font-bold text-white sm:text-3xl">
-            {restaurantTitle?.title}
+            {allRestaurants[4]?.title}
           </h2>
         </div>
         <div className="my-6 flex w-full flex-wrap gap-2">
           <Filters
-            Restaurant={restaurantGrid}
+            Restaurant={allRestaurants[5]}
             setRestaurant={setFilteredRestaurants}
             setShowExtraData={setShowExtraData}
           />
         </div>
-        {visibleRestaurants.length !== 0 ? (
+        {filteredRestaurants?.length !== 0 ? (
           <div className="grid grid-cols-1 place-items-center gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {visibleRestaurants.map((restaurant) => (
-              <RestaurantCard info={restaurant?.info} key={restaurant?.info?.id || uuidv4()} />
+            {filteredRestaurants.map((restaurant) => (
+              <RestaurantCard info={restaurant.info} key={uuidv4()} />
             ))}
             {showExtraData &&
               (!extraRestsData
                 ? null
-                : extraRestaurants.length === 0
-                ? Array(additionalRestaurants.length)
+                : extraRestsData.length === 0
+                ? Array(allRestaurants[7]?.length)
                     .fill("")
                     .map(() => <RestaurantCardShimmer key={uuidv4()} />)
-                : extraRestaurants.map((restaurant) => (
+                : extraRestsData?.map((restaurant) => (
                     <RestaurantCard
-                      info={restaurant?.info}
-                      key={(restaurant?.info?.parentId || restaurant?.info?.id) + uuidv4()}
+                      info={restaurant.info}
+                      key={restaurant.info.parentId + uuidv4()}
                     />
                   )))}
           </div>

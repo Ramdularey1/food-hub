@@ -5,10 +5,6 @@ import { handleScrollTop } from "../../utils/helper";
 
 const RestaurantCard = ({ info }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
-  if (!info?.id) {
-    return null;
-  }
-
   const handleImageLoad = () => {
     setImageLoaded(true);
   };

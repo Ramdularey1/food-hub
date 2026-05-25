@@ -17,9 +17,6 @@ const useCollections = (collectionId) => {
             const data = await fetch(proxyUrl);
             const json = await data.json();
             const restInfo = json?.data?.cards;
-            if (!Array.isArray(restInfo)) {
-                throw new Error(json?.error || "Collection data not found");
-            }
             setRestaurant(restInfo);
         } catch (err) {
             console.log(err);
