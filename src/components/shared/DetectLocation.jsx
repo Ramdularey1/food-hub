@@ -59,12 +59,19 @@ const DetectLocation = ({onClose} ) => {
     }
 
     return (
-        <div onClick={closeLocationMenu} ref={menuRef} className="fixed inset-0 h-full flex-center flex-col bg-black bg-opacity-60 backdrop-blur-sm z-50">
-            <div className="flex p-2 flex-col gap-3 max-w-[346.42px] w-full">
-                <button onClick={onClose} className="self-end text-lg sm:text-xl md:text-2xl bg-slate-900 hover:border-slate-500 p-1 text-white border border-slate-500 rounded-full transition-all duration-300 hover:scale-90 focus:scale-75">
+        <div
+            onClick={closeLocationMenu}
+            ref={menuRef}
+            className="fixed inset-0 z-50 grid h-dvh w-full place-items-center overflow-hidden bg-black/60 p-4 backdrop-blur-sm"
+        >
+            <div className="relative w-full max-w-sm rounded-lg border border-white/10 bg-[#101522] p-5 shadow-2xl">
+                <button
+                    onClick={onClose}
+                    className="absolute right-3 top-3 rounded-lg border border-white/10 bg-white/[0.06] p-2 text-lg text-white transition hover:bg-white/[0.12] sm:text-xl"
+                >
                     <RxCross1 />
                 </button>
-                <div className=" w-full flex flex-col gap-3 p-5  max-w-md bg-black border border-slate-500 rounded-xl">
+                <div className="mt-10 flex w-full flex-col gap-3">
                     <button disabled={isFetching} className="text-white flex-center gap-2 p-2 md:p-3  bg-slate-900 hover:bg-slate-950 text-base md:text-lg rounded-lg shadow-lg border border-gray-400 disabled:bg-slate-700" onClick={() => { handleDetectLocation(null) }}>
                         {isFetching ? <FaLocationArrow className=" animate-bounce text-red-500 " /> : <FaLocationArrow className="text-red-500" />}
                         Detect current location

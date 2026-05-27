@@ -14,6 +14,8 @@ import HomeShimmer from "../../components/shimmers/HomeShimmer";
 import { v4 as uuidv4 } from "uuid";
 import { handleScrollTop } from "../../utils/helper";
 
+const asArray = (value) => (Array.isArray(value) ? value : []);
+
 window.addEventListener("DOMContentLoaded", function () {
   window.scrollTo(0, 0);
 });
@@ -25,6 +27,11 @@ const Home = () => {
   const [showExtraData, setShowExtraData] = useState(true);
   const [extraRestsData, setExtraRestsData] = useState(null);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const foodCollections = asArray(allRestaurants?.[1]);
+  const topRestaurants = asArray(allRestaurants?.[3]);
+  const restaurants = asArray(filteredRestaurants);
+  const extraRestaurants = asArray(extraRestsData);
+  const additionalRestaurants = asArray(allRestaurants?.[7]);
   const handleImageLoad = () => {
     setImageLoaded(true);
   };
@@ -34,6 +41,7 @@ const Home = () => {
 
   const scrollHandler = (direction, ref) => {
     const element = ref.current;
+    if (!element) return;
     if (direction == "left") {
       element.scrollLeft += -(element.clientWidth - element.clientWidth * 0.15);
     } else {
@@ -53,7 +61,7 @@ const Home = () => {
           setExtraRestsData([]);
           setLoadMoreRest(true);
           setTimeout(() => {
-            setExtraRestsData(allRestaurants[7]);
+            setExtraRestsData(additionalRestaurants);
           }, 2000);
         }
       }
@@ -62,7 +70,7 @@ const Home = () => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [loadMoreRest, allRestaurants]);
+  }, [loadMoreRest, allRestaurants, additionalRestaurants]);
 
   if (!allRestaurants) {
     return (
@@ -114,7 +122,7 @@ const Home = () => {
     <HomeShimmer />
   ) : (
     <main className="min-h-screen bg-[#080b12] text-white">
-      {allRestaurants[0] && (
+      {allRestaurants[0] && foodCollections.length > 0 && (
         <section className="container mx-auto border-b border-white/10 px-4 pb-8 pt-32 lg:pt-36">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-bold text-white sm:text-2xl md:text-3xl">
@@ -144,18 +152,20 @@ const Home = () => {
               ref={carouselRef}
               className="flex overflow-x-scroll overflow-y-hidden scroll-smooth rounded-lg scrollbar-hide"
             >
-              {allRestaurants[1].map((info) => (
+              {foodCollections.map((info) => (
                 <Link
                   onClick={() => {
                     handleScrollTop();
                   }}
                   to={
-                    "/collections/" +
-                    info?.action?.link?.split("=")[1]?.split("&")[0]
+                    info?.action?.link
+                      ? "/collections/" +
+                        info?.action?.link?.split("=")[1]?.split("&")[0]
+                      : "/"
                   }
                   key={"collections" + info?.id}
                 >
-                  <div className="w-[130px] md:w-40">
+                  <div className="w-[130px] shrink-0 md:w-40">
                     <img
                       onLoad={handleImageLoad}
                       className={` hover:scale-110 transition-all duration-300 ease-out w-full ${
@@ -172,7 +182,7 @@ const Home = () => {
           </div>
         </section>
       )}
-      {allRestaurants[2] && (
+      {allRestaurants[2] && topRestaurants.length > 0 && (
         <section className="container mx-auto mt-10 border-b border-white/10 px-4 pb-8">
           <div className="flex justify-between">
             <h2 className="text-2xl font-bold text-white md:text-3xl">
@@ -202,10 +212,10 @@ const Home = () => {
               ref={topRestRef}
               className="flex gap-4 overflow-x-scroll scroll-smooth scrollbar-hide"
             >
-              {allRestaurants[3].map((restaurant) => (
+              {topRestaurants.map((restaurant) => (
                 <RestaurantCard
-                  info={restaurant.info}
-                  key={restaurant.info.parentId + uuidv4()}
+                  info={restaurant?.info}
+                  key={(restaurant?.info?.parentId || restaurant?.info?.id) + uuidv4()}
                 />
               ))}
             </div>
@@ -228,22 +238,22 @@ const Home = () => {
             setShowExtraData={setShowExtraData}
           />
         </div>
-        {filteredRestaurants?.length !== 0 ? (
+        {restaurants.length !== 0 ? (
           <div className="grid grid-cols-1 place-items-center gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {filteredRestaurants.map((restaurant) => (
-              <RestaurantCard info={restaurant.info} key={uuidv4()} />
+            {restaurants.map((restaurant) => (
+              <RestaurantCard info={restaurant?.info} key={restaurant?.info?.id || uuidv4()} />
             ))}
             {showExtraData &&
               (!extraRestsData
                 ? null
-                : extraRestsData.length === 0
-                ? Array(allRestaurants[7]?.length)
+                : extraRestaurants.length === 0
+                ? Array(additionalRestaurants.length)
                     .fill("")
                     .map(() => <RestaurantCardShimmer key={uuidv4()} />)
-                : extraRestsData?.map((restaurant) => (
+                : extraRestaurants.map((restaurant) => (
                     <RestaurantCard
-                      info={restaurant.info}
-                      key={restaurant.info.parentId + uuidv4()}
+                      info={restaurant?.info}
+                      key={(restaurant?.info?.parentId || restaurant?.info?.id) + uuidv4()}
                     />
                   )))}
           </div>
