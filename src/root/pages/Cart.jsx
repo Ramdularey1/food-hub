@@ -42,8 +42,8 @@ const Cart = () => {
 
   if (!cartItems.restaurant) {
     return (
-      <section className=" flex container mx-auto pt-20 justify-center items-center flex-col">
-        <img src={"assets/emptycart.avif"} className="max-w-[430px] w-full" />
+      <section className="container mx-auto flex min-h-screen flex-col items-center justify-center px-4 pt-24 text-center">
+        <img src={"assets/emptycart.avif"} className="w-full max-w-[360px]" />
         <h1 className="text-xl mt-4 font-semibold text-gray-200">
           Your cart is empty
         </h1>
