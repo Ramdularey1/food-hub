@@ -47,6 +47,84 @@ const defaultFoodCarousel = [
 
 const asArray = (value) => (Array.isArray(value) ? value : []);
 
+const fallbackRestaurants = [
+    {
+        info: {
+            id: "fallback-1",
+            name: "Food Hub Kitchen",
+            cloudinaryImageId:
+                "RX_THUMBNAIL/IMAGES/VENDOR/2025/4/15/6208af77-7f60-4bda-a36e-66caadc33749_1079502.jpg",
+            avgRating: 4.5,
+            cuisines: ["North Indian", "Paneer", "Biryani"],
+            areaName: "Near you",
+            costForTwo: "₹300 for two",
+            sla: {
+                deliveryTime: 30,
+                slaString: "30-35 MINS",
+            },
+        },
+    },
+    {
+        info: {
+            id: "fallback-2",
+            name: "Biryani & Curry House",
+            cloudinaryImageId:
+                "RX_THUMBNAIL/IMAGES/VENDOR/2025/4/11/1071a106-b4a4-4d76-a250-9c6448704af5_795876.jpg",
+            avgRating: 4.3,
+            cuisines: ["Biryani", "Indian", "Snacks"],
+            areaName: "City Center",
+            costForTwo: "₹250 for two",
+            sla: {
+                deliveryTime: 35,
+                slaString: "35-40 MINS",
+            },
+        },
+    },
+    {
+        info: {
+            id: "fallback-3",
+            name: "Pizza Corner",
+            cloudinaryImageId:
+                "RX_THUMBNAIL/IMAGES/VENDOR/2024/7/28/ed9978fd-aef6-4336-89b8-40a1f57ea00a_238584.JPG",
+            avgRating: 4.4,
+            cuisines: ["Pizza", "Fast Food", "Beverages"],
+            areaName: "Main Market",
+            costForTwo: "₹400 for two",
+            sla: {
+                deliveryTime: 32,
+                slaString: "30-35 MINS",
+            },
+        },
+    },
+    {
+        info: {
+            id: "fallback-4",
+            name: "Rolls & Wraps Co.",
+            cloudinaryImageId:
+                "FOOD_CATALOG/IMAGES/CMS/2025/4/23/73824578-b2b6-419d-83a9-8efa3860e433_766d4810-d5a3-4e31-b1dd-92981a662cb3.jpeg",
+            avgRating: 4.2,
+            cuisines: ["Rolls", "Wraps", "Fast Food"],
+            areaName: "Food Street",
+            costForTwo: "₹200 for two",
+            sla: {
+                deliveryTime: 28,
+                slaString: "25-30 MINS",
+            },
+        },
+    },
+];
+
+const fallbackHomeData = [
+    { title: "What's on your mind?" },
+    defaultFoodCarousel,
+    { title: "Top restaurant chains near you" },
+    fallbackRestaurants,
+    { title: "Restaurants with online food delivery" },
+    fallbackRestaurants,
+    null,
+    [],
+];
+
 const useRestaurantsData = () => {
     const userLocation = useSelector((store) => store.userLocation);
     const [allRestaurants, setAllRestaurants] = useState([]);
@@ -136,8 +214,8 @@ const useRestaurantsData = () => {
             ]);
             setFilteredRestaurants(gridRestaurants);
         } catch (error) {
-            setAllRestaurants(null);
-            setFilteredRestaurants([]);
+            setAllRestaurants(fallbackHomeData);
+            setFilteredRestaurants(fallbackRestaurants);
             console.error(error);
         }
     };
