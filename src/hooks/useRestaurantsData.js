@@ -55,6 +55,85 @@ const defaultFoodCarousel = [
 
 const asArray = (value) => (Array.isArray(value) ? value : []);
 
+const locationFallbacks = {
+    lucknow: [
+        ["lucknow-royal-kitchen", "Royal Awadhi Kitchen", "Biryani, North Indian, Kebabs", "Hazratganj", "4.5", "30-35 MINS", "RX_THUMBNAIL/IMAGES/VENDOR/2025/4/11/1071a106-b4a4-4d76-a250-9c6448704af5_795876.jpg"],
+        ["lucknow-paneer-house", "Paneer House Lucknow", "Paneer, Indian, Thalis", "Aliganj", "4.3", "25-30 MINS", "RX_THUMBNAIL/IMAGES/VENDOR/2025/4/15/6208af77-7f60-4bda-a36e-66caadc33749_1079502.jpg"],
+        ["lucknow-pizza-corner", "Pizza Corner", "Pizza, Fast Food, Beverages", "Gomti Nagar", "4.2", "30-35 MINS", "RX_THUMBNAIL/IMAGES/VENDOR/2024/7/28/ed9978fd-aef6-4336-89b8-40a1f57ea00a_238584.JPG"],
+        ["lucknow-rolls", "Rolls & Wraps Co.", "Rolls, Wraps, Snacks", "Indira Nagar", "4.1", "25-30 MINS", "FOOD_CATALOG/IMAGES/CMS/2025/4/23/73824578-b2b6-419d-83a9-8efa3860e433_766d4810-d5a3-4e31-b1dd-92981a662cb3.jpeg"],
+    ],
+    mau: [
+        ["mau-spice-kitchen", "Mau Spice Kitchen", "North Indian, Chinese, Snacks", "Sahadatpura", "4.4", "30-35 MINS", "RX_THUMBNAIL/IMAGES/VENDOR/2025/4/15/6208af77-7f60-4bda-a36e-66caadc33749_1079502.jpg"],
+        ["mau-biryani-point", "Mau Biryani Point", "Biryani, Mughlai, Indian", "Munshipura", "4.2", "35-40 MINS", "RX_THUMBNAIL/IMAGES/VENDOR/2025/4/11/1071a106-b4a4-4d76-a250-9c6448704af5_795876.jpg"],
+        ["mau-chaat-corner", "Chaat Corner Mau", "Chaat, Street Food, Sweets", "Mirzahadi Pura", "4.3", "20-25 MINS", "MERCHANDISING_BANNERS/IMAGES/MERCH/2024/7/2/6ef07bda-b707-48ea-9b14-2594071593d1_Gulab jamun.png"],
+        ["mau-tandoori-hub", "Tandoori Hub", "Tandoori, Rolls, Fast Food", "Railway Station Road", "4.1", "25-30 MINS", "FOOD_CATALOG/IMAGES/CMS/2025/4/23/73824578-b2b6-419d-83a9-8efa3860e433_766d4810-d5a3-4e31-b1dd-92981a662cb3.jpeg"],
+    ],
+    default: [
+        ["food-hub-kitchen", "Food Hub Kitchen", "North Indian, Paneer, Biryani", "Near you", "4.5", "30-35 MINS", "RX_THUMBNAIL/IMAGES/VENDOR/2025/4/15/6208af77-7f60-4bda-a36e-66caadc33749_1079502.jpg"],
+        ["city-biryani-house", "City Biryani House", "Biryani, Indian, Snacks", "City Center", "4.3", "35-40 MINS", "RX_THUMBNAIL/IMAGES/VENDOR/2025/4/11/1071a106-b4a4-4d76-a250-9c6448704af5_795876.jpg"],
+        ["fresh-pizza-cafe", "Fresh Pizza Cafe", "Pizza, Fast Food, Beverages", "Main Market", "4.4", "30-35 MINS", "RX_THUMBNAIL/IMAGES/VENDOR/2024/7/28/ed9978fd-aef6-4336-89b8-40a1f57ea00a_238584.JPG"],
+        ["quick-rolls", "Quick Rolls", "Rolls, Wraps, Fast Food", "Food Street", "4.2", "25-30 MINS", "FOOD_CATALOG/IMAGES/CMS/2025/4/23/73824578-b2b6-419d-83a9-8efa3860e433_766d4810-d5a3-4e31-b1dd-92981a662cb3.jpeg"],
+    ],
+};
+
+const toRestaurantCard = (restaurant, city) => {
+    const [id, name, cuisines, areaName, avgRating, slaString, cloudinaryImageId] = restaurant;
+
+    return {
+        info: {
+            id: `${city}-${id}`,
+            name,
+            cloudinaryImageId,
+            avgRating,
+            avgRatingString: avgRating,
+            cuisines: cuisines.split(", "),
+            areaName,
+            costForTwo: "₹300 for two",
+            costForTwoMessage: "₹300 for two",
+            sla: {
+                deliveryTime: Number(slaString.split("-")[0]) || 30,
+                slaString,
+            },
+        },
+    };
+};
+
+const getFallbackKey = ({ city, latitude, longitude }) => {
+    const cityName = city?.toLowerCase() || "";
+
+    if (cityName.includes("mau")) return "mau";
+    if (cityName.includes("lucknow")) return "lucknow";
+
+    const lat = Number(latitude);
+    const lng = Number(longitude);
+
+    if (lat > 25.7 && lat < 26.3 && lng > 83.2 && lng < 84) return "mau";
+    if (lat > 26.6 && lat < 27.2 && lng > 80.6 && lng < 81.3) return "lucknow";
+
+    return "default";
+};
+
+const buildFallbackHomeData = (location) => {
+    const fallbackKey = getFallbackKey(location);
+    const fallbackRestaurants = locationFallbacks[fallbackKey].map((restaurant) =>
+        toRestaurantCard(restaurant, fallbackKey)
+    );
+
+    return {
+        homeData: [
+            { title: "What's on your mind?" },
+            defaultFoodCarousel,
+            { title: `Top restaurant chains in ${location?.city || "your area"}` },
+            fallbackRestaurants,
+            { title: "Restaurants with online food delivery" },
+            fallbackRestaurants,
+            null,
+            [],
+        ],
+        restaurants: fallbackRestaurants,
+    };
+};
+
 const fetchRestaurantsJson = async (swiggyPath) => {
     const urls = [
         getSwiggyProxyUrl(swiggyPath),
@@ -176,8 +255,9 @@ const useRestaurantsData = () => {
             ]);
             setFilteredRestaurants(gridRestaurants);
         } catch (error) {
-            setAllRestaurants(null);
-            setFilteredRestaurants([]);
+            const fallback = buildFallbackHomeData(userLocation);
+            setAllRestaurants(fallback.homeData);
+            setFilteredRestaurants(fallback.restaurants);
             console.error(error);
         }
     };
