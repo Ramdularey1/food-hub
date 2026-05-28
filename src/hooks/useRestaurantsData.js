@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { getSwiggyProxyUrl } from "../utils/swiggyProxy";
 
 const defaultFoodCarousel = [
     {
@@ -57,8 +58,8 @@ const useRestaurantsData = () => {
     
     const getRestaurantsData = async () => {
         try {
-            const swiggyUrl = `https://www.swiggy.com/dapi/restaurants/list/v5?lat=${userLocation.latitude}&lng=${userLocation.longitude}&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING`;
-            const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(swiggyUrl)}`;
+            const swiggyPath = `/dapi/restaurants/list/v5?lat=${userLocation.latitude}&lng=${userLocation.longitude}&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING`;
+            const proxyUrl = getSwiggyProxyUrl(swiggyPath);
             
             const res = await fetch(proxyUrl);
             const json = await res.json();

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import useThrottle from "./useThrottle";
 import { useSelector } from "react-redux";
+import { getSwiggyProxyUrl } from "../utils/swiggyProxy";
 
 const useSearchOptions = (searchQuery) => {
   const [searchData, setSearchData] = useState();
@@ -13,8 +14,8 @@ const useSearchOptions = (searchQuery) => {
   useEffect(() => {
     const handleSearch = async () => {
       try {
-        const swiggyUrl = `https://www.swiggy.com/dapi/restaurants/search/suggest?lat=${latitude}&lng=${longitude}&str=${throttleSearchQuery}&trackingId=null`;
-        const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(swiggyUrl)}`;
+        const swiggyPath = `/dapi/restaurants/search/suggest?lat=${latitude}&lng=${longitude}&str=${throttleSearchQuery}&trackingId=null`;
+        const proxyUrl = getSwiggyProxyUrl(swiggyPath);
         
         const res = await fetch(proxyUrl);
         const data = await res.json();

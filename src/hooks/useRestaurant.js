@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { getSwiggyProxyUrl } from "../utils/swiggyProxy";
 
 const fallbackMenuItems = [
   {
@@ -132,10 +133,7 @@ const useRestaurant = (resId) => {
   const getRestaurantMenu = async () => {
     try {
       const swiggyPath = `/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=${latitude}&lng=${longitude}&restaurantId=${resId}&catalog_qa=undefined&submitAction=ENTER`;
-      const swiggyUrl = `https://www.swiggy.com${swiggyPath}`;
-      const proxyUrl = import.meta.env.DEV
-        ? `/api/swiggy${swiggyPath}`
-        : `https://corsproxy.io/?${encodeURIComponent(swiggyUrl)}`;
+      const proxyUrl = getSwiggyProxyUrl(swiggyPath);
 
       const data = await fetch(proxyUrl);
       if (!data.ok) {

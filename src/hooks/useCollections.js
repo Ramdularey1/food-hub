@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { getSwiggyProxyUrl } from "../utils/swiggyProxy";
 
 const useCollections = (collectionId) => {
     const { latitude, longitude } = useSelector((store) => store.userLocation);
@@ -11,8 +12,8 @@ const useCollections = (collectionId) => {
 
     const getCollection = async () => {
         try {
-            const swiggyUrl = `https://www.swiggy.com/dapi/restaurants/list/v5?lat=${latitude}&lng=${longitude}&collection=${collectionId}&tags=layout_BAU_Contextual%2Ckachori&sortBy=&filters=&type=rcv2&offset=0&page_type=null`;
-            const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(swiggyUrl)}`;
+            const swiggyPath = `/dapi/restaurants/list/v5?lat=${latitude}&lng=${longitude}&collection=${collectionId}&tags=layout_BAU_Contextual%2Ckachori&sortBy=&filters=&type=rcv2&offset=0&page_type=null`;
+            const proxyUrl = getSwiggyProxyUrl(swiggyPath);
             
             const data = await fetch(proxyUrl);
             const json = await data.json();
