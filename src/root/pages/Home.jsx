@@ -39,6 +39,13 @@ const Home = () => {
   const carouselRef = useRef(null);
   const topRestRef = useRef(null);
 
+  const getCollectionLink = (info) => {
+    const collectionId = info?.action?.link?.split("=")[1]?.split("&")[0];
+    if (collectionId) return "/collections/" + collectionId;
+    if (info?.searchText) return `/search?q=${encodeURIComponent(info.searchText)}`;
+    return "/search";
+  };
+
   const scrollHandler = (direction, ref) => {
     const element = ref.current;
     if (!element) return;
@@ -157,12 +164,7 @@ const Home = () => {
                   onClick={() => {
                     handleScrollTop();
                   }}
-                  to={
-                    info?.action?.link
-                      ? "/collections/" +
-                        info?.action?.link?.split("=")[1]?.split("&")[0]
-                      : "/"
-                  }
+                  to={getCollectionLink(info)}
                   key={"collections" + info?.id}
                 >
                   <div className="w-[130px] shrink-0 md:w-40">

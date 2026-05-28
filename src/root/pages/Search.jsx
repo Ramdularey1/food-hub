@@ -3,12 +3,14 @@ import { IoSearchOutline } from "react-icons/io5";
 import { RxCross1 } from "react-icons/rx";
 import { IMG_SEARCH_URL } from "../../utils/constants";
 import useSearchOptions from "../../hooks/useSearchOptions";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { TbLoader3 } from "react-icons/tb";
 import { v4 as uuidv4 } from "uuid";
 
 const Search = () => {
-  const [searchQuery, setSearchQuery] = useState("");
+  const { search } = useLocation();
+  const initialQuery = new URLSearchParams(search).get("q") || "";
+  const [searchQuery, setSearchQuery] = useState(initialQuery);
   const { searchData, isLoading } = useSearchOptions(searchQuery);
 
   const handleSetSearchQuery = (e) => {

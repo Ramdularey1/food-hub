@@ -5,41 +5,49 @@ import { getSwiggyProxyUrl } from "../utils/swiggyProxy";
 const defaultFoodCarousel = [
     {
         id: "default-biryani",
+        searchText: "Biryani",
         imageId:
             "MERCHANDISING_BANNERS/IMAGES/MERCH/2024/7/2/6ef07bda-b707-48ea-9b14-2594071593d1_Biryani.png",
     },
     {
         id: "default-north-indian",
+        searchText: "North Indian",
         imageId:
             "MERCHANDISING_BANNERS/IMAGES/MERCH/2025/1/24/05a939eb-fd4e-4308-b989-d1c54f4421b3_northindian1.png",
     },
     {
         id: "default-noodles",
+        searchText: "Noodles",
         imageId:
             "MERCHANDISING_BANNERS/IMAGES/MERCH/2024/7/2/6ef07bda-b707-48ea-9b14-2594071593d1_Noodles.png",
     },
     {
         id: "default-gulab-jamun",
+        searchText: "Gulab Jamun",
         imageId:
             "MERCHANDISING_BANNERS/IMAGES/MERCH/2024/7/2/6ef07bda-b707-48ea-9b14-2594071593d1_Gulab jamun.png",
     },
     {
         id: "default-biryani-2",
+        searchText: "Biryani",
         imageId:
             "MERCHANDISING_BANNERS/IMAGES/MERCH/2024/7/2/6ef07bda-b707-48ea-9b14-2594071593d1_Biryani.png",
     },
     {
         id: "default-north-indian-2",
+        searchText: "North Indian",
         imageId:
             "MERCHANDISING_BANNERS/IMAGES/MERCH/2025/1/24/05a939eb-fd4e-4308-b989-d1c54f4421b3_northindian1.png",
     },
     {
         id: "default-noodles-2",
+        searchText: "Noodles",
         imageId:
             "MERCHANDISING_BANNERS/IMAGES/MERCH/2024/7/2/6ef07bda-b707-48ea-9b14-2594071593d1_Noodles.png",
     },
     {
         id: "default-gulab-jamun-2",
+        searchText: "Gulab Jamun",
         imageId:
             "MERCHANDISING_BANNERS/IMAGES/MERCH/2024/7/2/6ef07bda-b707-48ea-9b14-2594071593d1_Gulab jamun.png",
     },
@@ -47,83 +55,37 @@ const defaultFoodCarousel = [
 
 const asArray = (value) => (Array.isArray(value) ? value : []);
 
-const fallbackRestaurants = [
-    {
-        info: {
-            id: "fallback-1",
-            name: "Food Hub Kitchen",
-            cloudinaryImageId:
-                "RX_THUMBNAIL/IMAGES/VENDOR/2025/4/15/6208af77-7f60-4bda-a36e-66caadc33749_1079502.jpg",
-            avgRating: 4.5,
-            cuisines: ["North Indian", "Paneer", "Biryani"],
-            areaName: "Near you",
-            costForTwo: "₹300 for two",
-            sla: {
-                deliveryTime: 30,
-                slaString: "30-35 MINS",
-            },
-        },
-    },
-    {
-        info: {
-            id: "fallback-2",
-            name: "Biryani & Curry House",
-            cloudinaryImageId:
-                "RX_THUMBNAIL/IMAGES/VENDOR/2025/4/11/1071a106-b4a4-4d76-a250-9c6448704af5_795876.jpg",
-            avgRating: 4.3,
-            cuisines: ["Biryani", "Indian", "Snacks"],
-            areaName: "City Center",
-            costForTwo: "₹250 for two",
-            sla: {
-                deliveryTime: 35,
-                slaString: "35-40 MINS",
-            },
-        },
-    },
-    {
-        info: {
-            id: "fallback-3",
-            name: "Pizza Corner",
-            cloudinaryImageId:
-                "RX_THUMBNAIL/IMAGES/VENDOR/2024/7/28/ed9978fd-aef6-4336-89b8-40a1f57ea00a_238584.JPG",
-            avgRating: 4.4,
-            cuisines: ["Pizza", "Fast Food", "Beverages"],
-            areaName: "Main Market",
-            costForTwo: "₹400 for two",
-            sla: {
-                deliveryTime: 32,
-                slaString: "30-35 MINS",
-            },
-        },
-    },
-    {
-        info: {
-            id: "fallback-4",
-            name: "Rolls & Wraps Co.",
-            cloudinaryImageId:
-                "FOOD_CATALOG/IMAGES/CMS/2025/4/23/73824578-b2b6-419d-83a9-8efa3860e433_766d4810-d5a3-4e31-b1dd-92981a662cb3.jpeg",
-            avgRating: 4.2,
-            cuisines: ["Rolls", "Wraps", "Fast Food"],
-            areaName: "Food Street",
-            costForTwo: "₹200 for two",
-            sla: {
-                deliveryTime: 28,
-                slaString: "25-30 MINS",
-            },
-        },
-    },
-];
+const fetchRestaurantsJson = async (swiggyPath) => {
+    const urls = [
+        getSwiggyProxyUrl(swiggyPath),
+        `https://corsproxy.io/?${encodeURIComponent(
+            `https://www.swiggy.com${swiggyPath}`
+        )}`,
+    ];
 
-const fallbackHomeData = [
-    { title: "What's on your mind?" },
-    defaultFoodCarousel,
-    { title: "Top restaurant chains near you" },
-    fallbackRestaurants,
-    { title: "Restaurants with online food delivery" },
-    fallbackRestaurants,
-    null,
-    [],
-];
+    let lastError;
+
+    for (const url of urls) {
+        try {
+            const res = await fetch(url);
+            if (!res.ok) throw new Error(`Request failed with ${res.status}`);
+
+            const json = await res.json();
+            if (!Array.isArray(json?.data?.cards)) {
+                throw new Error("Restaurant cards missing from response");
+            }
+
+            return json;
+        } catch (error) {
+            lastError = error;
+        }
+    }
+
+    throw lastError;
+};
+
+const hasRestaurants = (restaurants) =>
+    restaurants.some((restaurant) => restaurant?.info?.id);
 
 const useRestaurantsData = () => {
     const userLocation = useSelector((store) => store.userLocation);
@@ -137,10 +99,7 @@ const useRestaurantsData = () => {
     const getRestaurantsData = async () => {
         try {
             const swiggyPath = `/dapi/restaurants/list/v5?lat=${userLocation.latitude}&lng=${userLocation.longitude}&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING`;
-            const proxyUrl = getSwiggyProxyUrl(swiggyPath);
-            
-            const res = await fetch(proxyUrl);
-            const json = await res.json();
+            const json = await fetchRestaurantsJson(swiggyPath);
             const cards = asArray(json?.data?.cards);
             
             const topBrand = cards.find(
@@ -202,6 +161,9 @@ const useRestaurantsData = () => {
                     (item) => !set2.has(item.info.id)
                 );
 
+            const hasAnyRestaurants =
+                hasRestaurants(topRestaurants) || hasRestaurants(gridRestaurants);
+
             setAllRestaurants([
                 infoLink?.card?.card?.header || { title: "What's on your mind?" },
                 infoItems.length > 0 ? infoItems : defaultFoodCarousel,
@@ -209,13 +171,13 @@ const useRestaurantsData = () => {
                 topRestaurants, 
                 allRestsTitle?.card?.card,
                 allTotalRests, 
-                gridRestaurants.length || topRestaurants.length ? null : unService?.card?.card, 
+                hasAnyRestaurants ? null : unService?.card?.card, 
                 additionalRests, 
             ]);
             setFilteredRestaurants(gridRestaurants);
         } catch (error) {
-            setAllRestaurants(fallbackHomeData);
-            setFilteredRestaurants(fallbackRestaurants);
+            setAllRestaurants(null);
+            setFilteredRestaurants([]);
             console.error(error);
         }
     };
