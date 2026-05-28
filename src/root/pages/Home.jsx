@@ -29,6 +29,7 @@ const Home = () => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const foodCollections = asArray(allRestaurants?.[1]);
   const topRestaurants = asArray(allRestaurants?.[3]);
+  const allRestaurantCards = asArray(allRestaurants?.[5]);
   const restaurants = asArray(filteredRestaurants);
   const extraRestaurants = asArray(extraRestsData);
   const additionalRestaurants = asArray(allRestaurants?.[7]);
@@ -39,10 +40,44 @@ const Home = () => {
   const carouselRef = useRef(null);
   const topRestRef = useRef(null);
 
+  const getMatchingCarouselRestaurant = (info) => {
+    if (!info?.searchText) return null;
+
+    const searchText = info.searchText.toLowerCase();
+    return (
+      allRestaurantCards.find((restaurant) => {
+        const restaurantInfo = restaurant?.info;
+        const cuisineText = asArray(restaurantInfo?.cuisines)
+          .join(" ")
+          .toLowerCase();
+        const nameText = restaurantInfo?.name?.toLowerCase() || "";
+
+        return nameText.includes(searchText) || cuisineText.includes(searchText);
+      }) ||
+      topRestaurants.find((restaurant) => restaurant?.info?.id) ||
+      allRestaurantCards.find((restaurant) => restaurant?.info?.id)
+    );
+  };
+
+  const storeRestaurantInfo = (restaurant) => {
+    const info = restaurant?.info;
+    if (!info?.id) return;
+
+    try {
+      sessionStorage.setItem("selectedRestaurant", JSON.stringify(info));
+      sessionStorage.setItem(`restaurant-${info.id}`, JSON.stringify(info));
+    } catch (error) {
+      console.error("Unable to save restaurant info", error);
+    }
+  };
+
   const getCollectionLink = (info) => {
     const collectionId = info?.action?.link?.split("=")[1]?.split("&")[0];
     if (collectionId) return "/collections/" + collectionId;
-    if (info?.searchText) return `/search?q=${encodeURIComponent(info.searchText)}`;
+
+    const restaurant = getMatchingCarouselRestaurant(info);
+    if (restaurant?.info?.id) return "/restaurant/" + restaurant.info.id;
+
     return "/search";
   };
 
@@ -162,6 +197,7 @@ const Home = () => {
               {foodCollections.map((info) => (
                 <Link
                   onClick={() => {
+                    storeRestaurantInfo(getMatchingCarouselRestaurant(info));
                     handleScrollTop();
                   }}
                   to={getCollectionLink(info)}
